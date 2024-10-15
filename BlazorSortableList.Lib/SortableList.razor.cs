@@ -201,8 +201,12 @@ namespace BlazorSortableList
                         {
                             Handle = settings.CssForDragHandle;
                         }
+                       
+                        if (string.IsNullOrEmpty(Filter))
+                        {
+                            Filter = settings.CssForDisabledItem;
+                        }
 
-                        Filter = settings.CssForDisabledItem;
                         ForceFallback = !settings.AllowHtml5DragAndDrop;
                         if (settings.MultiSelection)
                         {
