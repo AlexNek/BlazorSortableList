@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageReadmeFile>README.MD</PackageReadmeFile>
@@ -32,8 +32,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components">
+      <Version Condition="'$(TargetFramework)' == 'net8.0'">8.0.11</Version>
+      <Version Condition="'$(TargetFramework)' == 'net9.0'">9.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web">
+      <Version Condition="'$(TargetFramework)' == 'net8.0'">8.0.11</Version>
+      <Version Condition="'$(TargetFramework)' == 'net9.0'">9.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Content Update="SortableList.razor">
