@@ -10,7 +10,7 @@ Fork an implementation of the [SortableJS library](https://sortablejs.github.io/
 
 Great implementation, but I would like to make some changes:
 - extract package (done).
-- use .NET 8.0 project style for Demo application (done).
+- use .NET 8.0 (10.0 now) project style for Demo application (done).
 - I am thinking of an architecture/usability improvement (done).
 - add support for multiple lists (done).
 - implement some of the missing functionality from the JS library (multi selection added).
@@ -25,7 +25,8 @@ Compare current implementation with original version (.NET 7):
 
 ## Prerequisites
 
-- [dotnet 8](https://dotnet.microsoft.com/download/dotnet/8.0)
+- ~~[dotnet 8](https://dotnet.microsoft.com/download/dotnet/8.0)~~
+- [dotnet 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 
 ## Running Locally
 
@@ -430,6 +431,7 @@ Sometimes, when updating the software, the browser used an old version of JavaSc
 If you see any exceptions or the demo application doesn't work for you, try opening the Browser Developer Console/Network tab. Then select "Disable Cache" and refresh the page.
 
 ## History
+V2.1.2 - update to .NET 10.0 and MSVS 2026, made Demo application compatible to .net 10.0  
 V2.1.1 - update to .NET 9.0, replace TabControl in Demo application
 V2.1 - added support of nested lists.  
 V2.0 - **Breaking changes!** Added support for multiple lists. Multiple selections possible too.  
