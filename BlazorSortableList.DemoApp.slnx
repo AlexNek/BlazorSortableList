@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Demo/">
+    <Project Path="BlazorSortableList.DemoApp/BlazorSortableList.DemoApp.Client/BlazorSortableList.DemoApp.Client.csproj" />
+    <Project Path="BlazorSortableList.DemoApp/BlazorSortableList.DemoApp/BlazorSortableList.DemoApp.csproj" />
+    <Project Path="BlazorSortableList.DemoAppNet7/BlazorSortableList.DemoAppNet7.csproj" />
+  </Folder>
+  <Folder Name="/Lib/">
+    <Project Path="BlazorSortableList.Lib/BlazorSortableList.csproj" />
+  </Folder>
+  <Folder Name="/Solution ITems/">
+    <File Path="README.MD" />
+  </Folder>
+</Solution>

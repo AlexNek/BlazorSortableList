@@ -1,5 +1,4 @@
 using BlazorSortableList.DemoApp.Client;
-using BlazorSortableList.DemoApp.Components;
 
 namespace BlazorSortableList.DemoApp
 {
@@ -14,10 +13,7 @@ namespace BlazorSortableList.DemoApp
             services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
-
             services.AddSingleton<IPersistenceSample, PersistenceSample>();
-
-            //services.AddServerSideBlazor().AddCircuitOptions(option => { option.DetailedErrors = true; });
 
             var app = builder.Build();
 
@@ -33,19 +29,12 @@ namespace BlazorSortableList.DemoApp
                 app.UseHsts();
             }
 
-            //services.AddServerSideBlazor().AddCircuitOptions(option =>
-            //    {
-            //        if (app.Environment.IsDevelopment()) //Only add details when debugging.
-            //        {
-            //            option.DetailedErrors = true;
-            //        }
-            //    });
-
+            app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
             app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
             app.UseAntiforgery();
 
+            app.MapStaticAssets();
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()
