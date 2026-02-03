@@ -1,12 +1,13 @@
 # Blazor Sortable List
 ## Overview
-Fork an implementation of the [SortableJS library](https://sortablejs.github.io/Sortable/) for Blazor. This example shows you how to reorder elements within a list using drag and drop.
+Forked implementation of the [SortableJS library](https://sortablejs.github.io/Sortable/) for Blazor. This example shows you how to reorder elements within a list using drag and drop.
 
-- [View Demos .NET7 web assembly](https://mango-flower-090e9130f.4.azurestaticapps.net/)
+- [View Demos .NET7 WebAssembly (legacy)](https://mango-flower-090e9130f.4.azurestaticapps.net/)
+- [View Demos .NET8 server prerendering](https://blazorsortablelistdemoapp2024.azurewebsites.net/)
 - [View Youtube demonstration](https://www.youtube.com/watch?v=DdsD1j8a-DA)
 
 > Original JS library has more features as implemented now.  
-> Current version supports one or two lists.
+> Current version supports multiple lists, multi-selection, and nested lists.
 
 Great implementation, but I would like to make some changes:
 - extract package (done).
@@ -20,6 +21,7 @@ Great implementation, but I would like to make some changes:
 
 Compare current implementation with original version (.NET 7):
 - [View Demos .NET8 server prerendering](https://blazorsortablelistdemoapp2024.azurewebsites.net/)
+- [View Demos .NET10 server prerendering](https://blazorsortablelistdemoapp2026.azurewebsites.net/)
 
 >**Note**: If you are using two or more lists, and one of the lists is empty, then drop the item near the top of the empty list.
 
@@ -49,17 +51,17 @@ dotnet add package BlazorSortableList
 
  - Using MS VS Manage NuGet Packages search for `BlazorSortableList`
 
-2. Add SortableJS to your `index.html`/`app.razor` file. You can either download from the [SortableJS website](https://sortablejs.github.io/Sortable/) or use a CDN...
+2. Add SortableJS to your `index.html`/`App.razor` file. The demo app uses the packaged static asset via `@Assets` (see `BlazorSortableList.DemoApp/BlazorSortableList.DemoApp/App.razor`). You can also use a CDN.
+   **Note**: `@Assets[...]` is available in the .NET 8+ Blazor Web App hosting model. For older templates (or classic Blazor Server/WASM), use a direct path like `_content/BlazorSortableList/Sortable.js` or a CDN.
 
- ```
+ ```html
+<!-- Option 1: packaged asset (used in the DemoApp App.razor) -->
+<script src="@Assets["_content/BlazorSortableList/Sortable.js"]"></script>
+<!-- Option 2: CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
- ```
+```
 
-3. Add the `SortableList.razor.js` to your `index.html`/`app.razor` file..
-
- ```
-<script type="module" src="_content/BlazorSortableList/SortableList.razor.js"></script>
- ```
+3. `SortableList.razor.js` is imported by the component automatically via JS interop. No manual script tag is needed.
 
 4a. [From version 1.2](https://github.com/AlexNek/BlazorSortableList#version-12), you can move all the logic out of the component and use the standard implementation of the logic (`SingleSortableListGroup`, ~~V1.2:`TwoSortableListGroup`~~, V2.0:`MultiSortableListGroup`).
 
@@ -118,11 +120,12 @@ All properties are optional and have default values.
 |Pull|String|null|1.0|Used when you want to clone elments into a list instead of moving them. Set `Pull` to "clone"|
 |Put|Boolean|true|1.0|Set to false to disable dropping from another list onto the current list|
 |Sort|Boolean|true|1.0|Disable sorting within a list by setting to `false`|
-|Handle|String|""|1.0|The CSS class you want the sortable to respect as the drag handle|
-|Filter|String|""|1.0|The CSS class you want to use to identify elements that cannot be sorted or moved|
+|Handle|String|null|1.0|The CSS class you want the sortable to respect as the drag handle|
+|Filter|String|null|1.0|The CSS class you want to use to identify elements that cannot be sorted or moved|
 |ForceFallback|Boolean|true|1.0|Enable HTML5 drag and drop by setting to `false`|
 |DefaultSort|Boolean|false|1.1|Enable simplified use by setting to `true`.|
-|GroupModel|ISortableListGroup<T>|false|1.2|[Data management class](https://github.com/AlexNek/BlazorSortableList#version-12)|
+|GroupModel|ISortableListGroup<T>|null|1.2|[Data management class](https://github.com/AlexNek/BlazorSortableList#version-12)|
+|Style|String|null|2.1|Inline style for the list container|
 
 
 > **Note:** Pay attention to the fact that you have to declare the handle in your code. You can only drag an item using the handle. 
@@ -422,7 +425,8 @@ Table of all the settings you can make:
 |MultiSelection|-|boolean|false|2.0|Enable mutiple selection|
 |AddToSelectionKey|-|string|null|2.0|Define custom key for mutiple selection|
 |AvoidImplicitDeselect|-|boolean|false|2.0|By default, if you press outside the list box, the selection is removed. To prevent this, set it to true|
-|AvoidImplicitDeselect|-|boolean|false|2.1|True indicating whether appends the cloned DOM Element into the Document's Body allowed|
+|CssForSelection|-|string|""|2.0|CSS class applied to selected items|
+|FallbackOnBody|-|boolean|false|2.1|True indicating whether appends the cloned DOM Element into the Document's Body allowed|
 |SwapThreshold|-|double|1.0|2.1|Threshold of the swap zone
 
 
