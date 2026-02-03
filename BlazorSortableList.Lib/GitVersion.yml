@@ -1,14 +1,18 @@
 assembly-informational-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
-mode: Mainline
-increment: Inherit
-next-version: 2.1.1
+next-version: 2.1.2
+
 branches:
-  master: 
-    is-release-branch: true 
-    is-mainline: true
-  develop: 
-    is-release-branch: false
-    is-mainline: false
+  master:
+    regex: ^master$
+    increment: Patch
+    label: ''
+
+  develop:
+    regex: ^develop$
+    increment: Inherit
+    label: alpha
+
 ignore:
   sha: []
+
 merge-message-formats: {}
