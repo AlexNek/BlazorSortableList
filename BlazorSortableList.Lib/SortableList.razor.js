@@ -7,6 +7,19 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
     let multiDrag = (typeof cssForSelection !== 'undefined');
 
     let htmlElement = document.getElementById(id);
+    if (!htmlElement) {
+        console.error("SortableList init failed: element not found for id:", id);
+        return;
+    }
+
+    const SortableCtor = window.Sortable;
+    if (!SortableCtor) {
+        console.error("SortableList init failed: global Sortable not found. Make sure Sortable.js is loaded before this module.", id);
+        return;
+    }
+    if (DEBUG_MODE && SortableCtor.version) {
+        console.log("Sortable version:", SortableCtor.version);
+    }
 
     //new Sortable(htmlElement,
     //    {
@@ -38,7 +51,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
     //        }
     //    });
 
-    var sortable = new Sortable(htmlElement, {
+    var sortable = new SortableCtor(htmlElement, {
         animation: 200,
         group: {
             name: group,
