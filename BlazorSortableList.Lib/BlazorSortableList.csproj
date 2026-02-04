@@ -19,7 +19,11 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\README.MD" Link="README.MD" />
+    <None Include="..\README.MD">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <Link>README.MD</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />
