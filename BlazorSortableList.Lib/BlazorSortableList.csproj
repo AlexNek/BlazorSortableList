@@ -19,6 +19,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="..\README.MD" Link="README.MD" />
   </ItemGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />
