@@ -21,7 +21,7 @@ Great implementation, but I would like to make some changes:
 
 Compare current implementation with original version (.NET 7):
 - [View Demos .NET8 server prerendering](https://blazorsortablelistdemoapp2024.azurewebsites.net/)
-- [View Demos .NET10 server prerendering](https://blazorsortablelistdemoapp2026.azurewebsites.net/)
+- [View Demos .NET10 server prerendering](https://blazorsortablelistdemoapp2026-bqe0e7g0htaufrcy.germanywestcentral-01.azurewebsites.net/)
 
 >**Note**: If you are using two or more lists, and one of the lists is empty, then drop the item near the top of the empty list.
 
