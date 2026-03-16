@@ -64,6 +64,9 @@ namespace BlazorSortableList
         public bool Sort { get; set; } = true;
         [Parameter]
         public string? Style { get; set; }
+        
+        [Parameter(CaptureUnmatchedValues = true)]
+        public IDictionary<string, object>? Attributes { get; set; }
 
         [Parameter]
         public RenderFragment<T>? SortableItemTemplate { get; set; }
