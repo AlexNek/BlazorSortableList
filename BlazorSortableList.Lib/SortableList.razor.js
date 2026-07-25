@@ -93,7 +93,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
 
                 let oldIndicies = Array.from(event.oldIndicies);
                 oldIndicies.forEach((item) => {
-                    event.to.insertBefore(item.multiDragElement, event.to.childNodes[item.index]);
+                    event.to.insertBefore(item.multiDragElement, event.to.children[item.index]);
                 });
             } else {
                 if (DEBUG_MODE) {
@@ -105,7 +105,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
 
                 // method inserts a child node before an existing child. insertBefore(newNode, referenceNode)
                 // referenceNode - The node before which newNode is inserted
-                event.to.insertBefore(event.item, event.to.childNodes[event.oldIndex]);
+                event.to.insertBefore(event.item, event.to.children[event.oldIndex]);
             }
             // Notify .NET to update its model and re-render
             component.invokeMethodAsync('OnUpdateJS', oldIndex, newIndex, event.from.id);
@@ -138,12 +138,12 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
 
                 let oldIndicies = Array.from(event.oldIndicies);
                 oldIndicies.forEach((item) => {
-                    event.from.insertBefore(item.multiDragElement, event.from.childNodes[item.index]);
+                    event.from.insertBefore(item.multiDragElement, event.from.children[item.index]);
                 });
             } else {
                 // Revert the DOM to match the .NET state
                 event.item.remove();
-                event.from.insertBefore(event.item, event.from.childNodes[event.oldIndex]);
+                event.from.insertBefore(event.item, event.from.children[event.oldIndex]);
             }
 
             // Notify .NET to update its model and re-render
