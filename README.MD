@@ -107,6 +107,24 @@ protected override async Task OnInitializedAsync()
 
 The `SortableItemTemplate` can contain any markup or components that you want. `SortList` implementation see below.
 
+### Put a `@key` on the root of your item template
+
+After a drag, the JS interop layer moves the dragged node back to its original position so that the DOM matches the .NET model again, and the model change then triggers a normal Blazor re-render. That is a DOM mutation Blazor's renderer did not perform itself, so without a key its diff matches the reused elements up positionally and can associate the wrong element with the wrong item - typically showing up as stale text, a lost input value, or focus jumping to a neighbouring row.
+
+Give the outermost element or component inside `SortableItemTemplate` a [`@key`](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering#the-key-directive-attribute) bound to something stable per item:
+
+```html
+<SortableList Id="sortable" Items="items" OnUpdate="@SortList" Context="item">
+    <SortableItemTemplate>
+        <div @key="item.Id">
+            <p>@item.Name</p>
+        </div>
+    </SortableItemTemplate>
+</SortableList>
+```
+
+The component cannot apply the key on your behalf: `@key` is a directive attribute that has to sit on an element or component frame, and `SortableList` only ever invokes the template as an opaque `RenderFragment<T>`. Keying it internally would mean wrapping every item in an extra element, which would change the markup and CSS of existing consumers.
+
 ## Attributes
 
 ### Properties
