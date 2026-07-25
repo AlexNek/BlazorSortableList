@@ -1,7 +1,13 @@
+let debugMode = false;
+
+/** Turns on verbose drag/drop tracing. Off by default so consumers get a quiet console. */
+export function setDebugMode(isEnabled) {
+    debugMode = isEnabled;
+}
+
 export function init(id, group, pull, put, sort, handle, filter, component, forceFallback, cssForSelection, multiDragKey, avoidImplicitDeselect, fallbackOnBody, swapThreshold) {
 
-    const DEBUG_MODE = true;
-    if (DEBUG_MODE) {
+    if (debugMode) {
         console.log("Init for Id:", id, "swapThreshold:", swapThreshold);
     }
     let multiDrag = (typeof cssForSelection !== 'undefined');
@@ -17,7 +23,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
         console.error("SortableList init failed: global Sortable not found. Make sure Sortable.js is loaded before this module.", id);
         return;
     }
-    if (DEBUG_MODE && SortableCtor.version) {
+    if (debugMode && SortableCtor.version) {
         console.log("Sortable version:", SortableCtor.version);
     }
 
@@ -70,7 +76,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
         avoidImplicitDeselect: avoidImplicitDeselect,
         swapThreshold: swapThreshold, //0.65,
         onUpdate: (event) => {
-            if (DEBUG_MODE) {
+            if (debugMode) {
                 console.log("onUpdate:");
                 console.log(event);
             }
@@ -96,7 +102,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
                     event.to.insertBefore(item.multiDragElement, event.to.childNodes[item.index]);
                 });
             } else {
-                if (DEBUG_MODE) {
+                if (debugMode) {
                     //console.log("remove item for update:");
                     //console.log(event.item);
                     //console.log("insert it before:", event.to, event.oldIndex, event.to.childNodes, event.to.childNodes[event.oldIndex]);
@@ -111,7 +117,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
             component.invokeMethodAsync('OnUpdateJS', oldIndex, newIndex, event.from.id);
         },
         onRemove: (event) => {
-            if (DEBUG_MODE) {
+            if (debugMode) {
                 console.log("onRemove:");
                 console.log(event);
             }
@@ -150,14 +156,14 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
             component.invokeMethodAsync('OnRemoveJS', oldIndex, newIndex, event.from.id, event.to.id);
         },
         onSelect: (event) => {
-            if (DEBUG_MODE) {
+            if (debugMode) {
                 console.log("onSelect:");
                 console.log(event);
             }
 
             let children = Array.from(event.from.children);
             let index = children.indexOf(event.item);
-            if (DEBUG_MODE) {
+            if (debugMode) {
                 //console.log(children);
                 console.log(index);
             }
@@ -166,14 +172,14 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
             component.invokeMethodAsync('OnSelectJS', event.from.id, index);
         },
         onDeselect: (event) => {
-            if (DEBUG_MODE) {
+            if (debugMode) {
                 console.log("onDeselect:");
                 console.log(event);
             }
 
             let children = Array.from(event.to.children);
             let index = children.indexOf(event.item);
-            if (DEBUG_MODE) {
+            if (debugMode) {
                 console.log(index);
             }
 
@@ -181,7 +187,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
             component.invokeMethodAsync('OnDeselectJS', event.from.id, index);
         },
         onEnd:(event) => {
-            if (DEBUG_MODE) {
+            if (debugMode) {
                 console.log("onEnd:");
                 console.log(event);
             }
