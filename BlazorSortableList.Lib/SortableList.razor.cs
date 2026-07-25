@@ -127,8 +127,8 @@ namespace BlazorSortableList
                 {
                     if (DefaultSort)
                     {
-                        throw new ArgumentException(
-                            "It must be defined as either {nameof(OnUpdate)} or {nameof(DefaultSort)}, but not both together.");
+                        throw new InvalidOperationException(
+                            $"It must be defined as either {nameof(OnUpdate)} or {nameof(DefaultSort)}, but not both together.");
                     }
 
                     // invoke the OnUpdate event passing in the oldIndex and the newIndex
