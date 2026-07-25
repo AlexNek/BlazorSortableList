@@ -109,7 +109,7 @@ The `SortableItemTemplate` can contain any markup or components that you want. `
 
 ### Put a `@key` on the root of your item template
 
-After a drag, the JS interop layer moves the dragged node back to its original position so that the DOM matches the .NET model again, and the model change then triggers a normal Blazor re-render. That is a DOM mutation Blazor's renderer did not perform itself, so without a key its diff matches the reused elements up positionally and can associate the wrong element with the wrong item - typically showing up as stale text, a lost input value, or focus jumping to a neighbouring row.
+After a drag, the JS interop layer moves the dragged node back to its original position so that the DOM matches the .NET model again, and the model change then triggers a normal Blazor re-render. That is a DOM mutation Blazor's renderer did not perform itself, so without a key its diff pairs up the reused elements by position and can associate the wrong element with the wrong item - typically showing up as stale text, a lost input value, or focus jumping to a neighbouring row.
 
 Give the outermost element or component inside `SortableItemTemplate` a [`@key`](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering#the-key-directive-attribute) bound to something stable per item:
 
