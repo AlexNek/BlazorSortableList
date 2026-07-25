@@ -13,6 +13,8 @@ namespace BlazorSortableList
 
         private DotNetObjectReference<SortableList<T>>? selfReference;
 
+        private IJSObjectReference? _module;
+
         private string _cssForSelection;
 
         private string? _multiDragKey = string.Empty;
@@ -68,7 +70,26 @@ namespace BlazorSortableList
         [Parameter]
         public RenderFragment<T>? SortableItemTemplate { get; set; }
 
-        public void Dispose() => selfReference?.Dispose();
+        public async ValueTask DisposeAsync()
+        {
+            if (_module != null)
+            {
+                try
+                {
+                    await _module.InvokeVoidAsync("destroy", Id);
+                    await _module.DisposeAsync();
+                }
+                catch (JSDisconnectedException)
+                {
+                    // The circuit is already gone, so there is nothing left to clean up on the JS side.
+                }
+
+                _module = null;
+            }
+
+            selfReference?.Dispose();
+            selfReference = null;
+        }
 
         [JSInvokable]
         public void OnDeselectJS(string fromId, int index)
@@ -146,10 +167,10 @@ namespace BlazorSortableList
             if (firstRender)
             {
                 selfReference = DotNetObjectReference.Create(this);
-                var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BlazorSortableList/SortableList.razor.js");
+                _module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BlazorSortableList/SortableList.razor.js");
 
                 //await JS.InvokeVoidAsync("console.log", $"***id:{Id}, group:{Group},pull: {Pull},put:{Put},sort:{Sort}, handle:{Handle}, filter:{Filter}, forceFallback:{ForceFallback}");
-                await module.InvokeAsync<string>(
+                await _module.InvokeAsync<string>(
                     "init",
                     Id,
                     Group,

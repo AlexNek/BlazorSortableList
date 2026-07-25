@@ -1,3 +1,13 @@
+const instances = new Map();
+
+export function destroy(id) {
+    const sortable = instances.get(id);
+    if (sortable) {
+        sortable.destroy();
+        instances.delete(id);
+    }
+}
+
 export function init(id, group, pull, put, sort, handle, filter, component, forceFallback, cssForSelection, multiDragKey, avoidImplicitDeselect, fallbackOnBody, swapThreshold) {
 
     const DEBUG_MODE = true;
@@ -50,6 +60,9 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
     //            console.log(index);
     //        }
     //    });
+
+    // A component re-initialising under an id we already track would otherwise orphan the previous instance.
+    destroy(id);
 
     var sortable = new SortableCtor(htmlElement, {
         animation: 200,
@@ -187,4 +200,6 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
             }
         }
     });
+
+    instances.set(id, sortable);
 }
