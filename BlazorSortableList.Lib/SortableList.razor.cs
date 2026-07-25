@@ -15,6 +15,12 @@ namespace BlazorSortableList
 
         private IJSObjectReference? _module;
 
+        /// <summary>
+        /// The id the JS instance was registered under. <see cref="Id"/> is a mutable parameter, so it
+        /// cannot be trusted to still hold the key the instance is stored against by disposal time.
+        /// </summary>
+        private string? _initializedId;
+
         private string _cssForSelection;
 
         private string? _multiDragKey = string.Empty;
@@ -72,23 +78,37 @@ namespace BlazorSortableList
 
         public async ValueTask DisposeAsync()
         {
-            if (_module != null)
+            try
             {
-                try
+                if (_module != null)
                 {
-                    await _module.InvokeVoidAsync("destroy", Id);
-                    await _module.DisposeAsync();
+                    try
+                    {
+                        if (_initializedId != null)
+                        {
+                            await _module.InvokeVoidAsync("destroy", _initializedId);
+                        }
+                    }
+                    finally
+                    {
+                        await _module.DisposeAsync();
+                    }
                 }
-                catch (JSDisconnectedException)
-                {
-                    // The circuit is already gone, so there is nothing left to clean up on the JS side.
-                }
-
-                _module = null;
             }
-
-            selfReference?.Dispose();
-            selfReference = null;
+            catch (JSDisconnectedException)
+            {
+                // The circuit is already gone, so there is nothing left to clean up on the JS side.
+            }
+            catch (JSException)
+            {
+                // A failing teardown on the JS side must not stop the managed references from being released.
+            }
+            finally
+            {
+                _module = null;
+                selfReference?.Dispose();
+                selfReference = null;
+            }
         }
 
         [JSInvokable]
@@ -170,9 +190,10 @@ namespace BlazorSortableList
                 _module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/BlazorSortableList/SortableList.razor.js");
 
                 //await JS.InvokeVoidAsync("console.log", $"***id:{Id}, group:{Group},pull: {Pull},put:{Put},sort:{Sort}, handle:{Handle}, filter:{Filter}, forceFallback:{ForceFallback}");
-                await _module.InvokeAsync<string>(
+                _initializedId = Id;
+                await _module.InvokeVoidAsync(
                     "init",
-                    Id,
+                    _initializedId,
                     Group,
                     Pull,
                     Put,
