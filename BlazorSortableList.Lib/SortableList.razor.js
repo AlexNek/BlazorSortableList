@@ -1,8 +1,11 @@
 let debugMode = false;
 
-/** Turns on verbose drag/drop tracing. Off by default so consumers get a quiet console. */
+/**
+ * Turns on verbose drag/drop tracing. Off by default so consumers get a quiet console.
+ * Matched strictly rather than by truthiness, so the string "false" does not switch logging on.
+ */
 export function setDebugMode(isEnabled) {
-    debugMode = isEnabled;
+    debugMode = isEnabled === true || isEnabled === 'true';
 }
 
 export function init(id, group, pull, put, sort, handle, filter, component, forceFallback, cssForSelection, multiDragKey, avoidImplicitDeselect, fallbackOnBody, swapThreshold) {
