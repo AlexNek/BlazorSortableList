@@ -4,7 +4,8 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
     if (DEBUG_MODE) {
         console.log("Init for Id:", id, "swapThreshold:", swapThreshold);
     }
-    let multiDrag = (typeof cssForSelection !== 'undefined');
+    // .NET marshals an unset string as null, never undefined, so a `typeof` check here would always pass.
+    let multiDrag = !!cssForSelection;
 
     let htmlElement = document.getElementById(id);
     if (!htmlElement) {
@@ -65,7 +66,7 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
         handle: handle || undefined,
 
         multiDrag: multiDrag,
-        selectedClass: cssForSelection,
+        selectedClass: cssForSelection || undefined,
         multiDragKey: multiDragKey,
         avoidImplicitDeselect: avoidImplicitDeselect,
         swapThreshold: swapThreshold, //0.65,
@@ -78,7 +79,8 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
             let oldIndex = event.oldDraggableIndex;
             let newIndex = event.newDraggableIndex;
             // in multi selection mode we have newIndicies only
-            let newIndicies = Array.from(event.newIndicies);
+            // Only the MultiDrag plugin adds these, so they are undefined when multiDrag is off.
+            let newIndicies = event.newIndicies ? Array.from(event.newIndicies) : [];
             if (newIndicies.length > 0) {
                 newIndex = newIndicies[0].index;
 
@@ -124,7 +126,8 @@ export function init(id, group, pull, put, sort, handle, filter, component, forc
             let newIndex = event.newDraggableIndex;
 
             // in multi selection mode we have newIndicies only
-            let newIndicies = Array.from(event.newIndicies);
+            // Only the MultiDrag plugin adds these, so they are undefined when multiDrag is off.
+            let newIndicies = event.newIndicies ? Array.from(event.newIndicies) : [];
             if (newIndicies.length > 0) {
                 newIndex = newIndicies[0].index;
 
